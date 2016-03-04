@@ -8,7 +8,9 @@ required_packages <- c(
     "DT",
     "dplyr",
     "sp",
-    "maptools"
+    "maptools",
+    "ggvis",
+    "dygraphs"
     )
 
 install_package_if_necessary <- function(package) {

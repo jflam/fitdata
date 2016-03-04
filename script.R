@@ -247,3 +247,39 @@ points_to_line <- function(data, long, lat, id_field = NULL, sort_field = NULL) 
 lls <- points_to_line(route, "lon", "lat")
 
 leaflet(lls) %>% addTiles() %>% addPolylines()
+
+# Now let's compute some data
+
+performance <-
+raw_data %>%
+select(record_distance, 
+       record_altitude,
+       record_speed,
+       record_power,
+       record_heart_rate,
+       record_cadence,
+       record_temperature) %>%
+filter(!is.na(record_distance))
+
+average_power <- mean(performance$record_power)
+
+# Plot a histogram of power
+
+library(ggvis)
+
+performance %>%
+    ggvis( ~ record_power ) %>%
+    layer_histograms(width = input_slider(1, 10, step = 1, label = "Bin Width (W)"),
+                   center = 35,
+                   fill := "#E74C3C") %>%
+    add_axis("x", title = "Power (W)") %>%
+    add_axis("y", title = "Count")
+
+# Plot a time series of HR, power, elevation vs. distance - the typical Strava analysis
+# TODO: fix the CSS 
+
+library(dygraphs)
+
+dygraph(performance, main = "Analysis") %>%
+  dyAxis("x", drawGrid = FALSE, label = "Distance (m)") %>%
+  dyRangeSelector()
