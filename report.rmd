@@ -1,4 +1,10 @@
+---
+title: "Cycling analysis"
+output: html_document
+---
 
+## Map:
+```{r, echo=FALSE, message=FALSE}
 # Read data
 
 path <- "data/2015-12-23-14-32-19_data.csv"
@@ -249,9 +255,11 @@ points_to_line <- function(data, long, lat, id_field = NULL, sort_field = NULL) 
 lls <- points_to_line(route, "lon", "lat")
 
 leaflet(lls) %>% addTiles() %>% addPolylines()
+```
 
-# Now let's compute some data
+## Histogram of power
 
+```{r, message=FALSE}
 performance <-
 raw_data %>%
 select(record_distance, 
@@ -276,12 +284,14 @@ performance %>%
                    fill := "#E74C3C") %>%
     add_axis("x", title = "Power (W)") %>%
     add_axis("y", title = "Count")
+```
 
-# Plot a time series of HR, power, elevation vs. distance - the typical Strava analysis
-# TODO: fix the CSS 
+## Analysis of ride
 
+```{r, message=FALSE}
 library(dygraphs)
 
 dygraph(performance, main = "Analysis") %>%
   dyAxis("x", drawGrid = FALSE, label = "Distance (m)") %>%
   dyRangeSelector()
+```

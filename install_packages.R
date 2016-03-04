@@ -10,7 +10,8 @@ required_packages <- c(
     "sp",
     "maptools",
     "ggvis",
-    "dygraphs"
+    "dygraphs",
+    "rmarkdown"
     )
 
 install_package_if_necessary <- function(package) {
